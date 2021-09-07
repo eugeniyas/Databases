@@ -1,4 +1,4 @@
--- Создание табличных пространств
+-- РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС‡РЅС‹С… РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІ
 
 CREATE TABLESPACE tblspc_product
   OWNER postgres
@@ -8,7 +8,7 @@ CREATE TABLESPACE tblspc_order
   OWNER postgres
   LOCATION 'C:\HW4_L7\order';
  
--- Создание базы данных
+-- Г‘Г®Г§Г¤Г Г­ГЁГҐ ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ
 
 CREATE DATABASE store
   WITH 
@@ -19,12 +19,12 @@ CREATE DATABASE store
   TABLESPACE = tblspc_product
   CONNECTION LIMIT = -1;
    
--- Создание схем
+-- Г‘Г®Г§Г¤Г Г­ГЁГҐ Г±ГµГҐГ¬
 
 CREATE SCHEMA prod;
 CREATE SCHEMA "order";
    
--- Создание ролей
+-- Г‘Г®Г§Г¤Г Г­ГЁГҐ Г°Г®Г«ГҐГ©
 
 CREATE ROLE store_admin WITH
   NOLOGIN
@@ -56,7 +56,7 @@ CREATE ROLE store_write WITH
  
 GRANT ALL ON ALL TABLES IN SCHEMA prod, "order" TO store_write;
 
--- Создание таблиц
+-- Г‘Г®Г§Г¤Г Г­ГЁГҐ ГІГ ГЎГ«ГЁГ¶
 
 CREATE TABLE prod.producer (
 	producer_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
