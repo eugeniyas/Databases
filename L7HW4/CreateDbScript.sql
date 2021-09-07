@@ -8,7 +8,7 @@ CREATE TABLESPACE tblspc_order
   OWNER postgres
   LOCATION 'C:\HW4_L7\order';
  
--- Ñîçäàíèå áàçû äàííûõ
+-- Создание базы данных
 
 CREATE DATABASE store
   WITH 
@@ -19,12 +19,12 @@ CREATE DATABASE store
   TABLESPACE = tblspc_product
   CONNECTION LIMIT = -1;
    
--- Ñîçäàíèå ñõåì
+-- Создание схем
 
 CREATE SCHEMA prod;
 CREATE SCHEMA "order";
    
--- Ñîçäàíèå ðîëåé
+-- Создание ролей
 
 CREATE ROLE store_admin WITH
   NOLOGIN
@@ -56,7 +56,7 @@ CREATE ROLE store_write WITH
  
 GRANT ALL ON ALL TABLES IN SCHEMA prod, "order" TO store_write;
 
--- Ñîçäàíèå òàáëèö
+-- Создание таблиц
 
 CREATE TABLE prod.producer (
 	producer_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
