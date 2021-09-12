@@ -22,7 +22,7 @@ CREATE DATABASE store
 -- Создание схем
 
 CREATE SCHEMA prod;
-CREATE SCHEMA "order";
+CREATE SCHEMA ord;
    
 -- Создание ролей
 
@@ -44,7 +44,7 @@ CREATE ROLE store_read WITH
   NOCREATEROLE
   NOREPLICATION;
  
-GRANT SELECT ON ALL TABLES IN SCHEMA prod, "order" TO store_read;
+GRANT SELECT ON ALL TABLES IN SCHEMA prod, ord TO store_read;
     
 CREATE ROLE store_write WITH
   NOLOGIN
@@ -54,13 +54,13 @@ CREATE ROLE store_write WITH
   NOCREATEROLE
   NOREPLICATION;
  
-GRANT ALL ON ALL TABLES IN SCHEMA prod, "order" TO store_write;
+GRANT ALL ON ALL TABLES IN SCHEMA prod, ord TO store_write;
 
 -- Создание таблиц
 
 CREATE TABLE prod.producer (
 	producer_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	"name" varchar(300) NOT NULL,
+	producer_name varchar(300) NOT NULL,
 	country varchar(50) NULL,
 	CONSTRAINT producer_pk PRIMARY KEY (producer_id)
 ) TABLESPACE tblspc_product;
@@ -85,7 +85,7 @@ CREATE TABLE prod.category (
 	description varchar(1500) NOT NULL,
 	parent_id int4 NULL,
 	CONSTRAINT category_pk PRIMARY KEY (category_id),
-	CONSTRAINT category_parent_id_fk FOREIGN KEY (parent_id) REFERENCES category(category_id)
+	CONSTRAINT category_parent_id_fk FOREIGN KEY (parent_id) REFERENCES prod.category(category_id)
 ) TABLESPACE tblspc_product;
 
 CREATE TABLE prod.product_category (
@@ -99,7 +99,7 @@ ALTER TABLE prod.product_category ADD CONSTRAINT product_category_product_id_fk 
 
 CREATE TABLE prod.image (
 	image_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	"name" varchar(100) NOT NULL,
+	image_name varchar(100) NOT NULL,
 	file_path varchar(250) NOT NULL,
 	CONSTRAINT image_pk PRIMARY KEY (image_id)
 ) TABLESPACE tblspc_product;
@@ -135,7 +135,7 @@ ALTER TABLE prod.rest ADD CONSTRAINT rest_fk FOREIGN KEY (product_id) REFERENCES
 
 CREATE TABLE prod.supplier (
 	supplier_id int4 NOT NULL,
-	"name" varchar(300) NOT NULL,
+	supplier_name varchar(300) NOT NULL,
 	phone varchar(10) NOT NULL,
 	address varchar(500) NOT NULL,
 	email varchar(50) NULL,
@@ -145,7 +145,7 @@ CREATE TABLE prod.supplier (
 CREATE TABLE prod.supply (
 	supply_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	code varchar(30) NOT NULL,
-	"date" date NOT NULL,
+	supply_date date NOT NULL,
 	supplier_id int4 NOT NULL,
 	total numeric(14,2) NOT NULL,
 	CONSTRAINT supply_pk PRIMARY KEY (supply_id),
@@ -165,7 +165,7 @@ CREATE TABLE prod.supply_product (
 ALTER TABLE prod.supply_product ADD CONSTRAINT supply_product_product_id_fk FOREIGN KEY (product_id) REFERENCES prod.product(product_id);
 ALTER TABLE prod.supply_product ADD CONSTRAINT supply_product_supply_id_fk FOREIGN KEY (supply_id) REFERENCES prod.supply(supply_id);
 
-CREATE TABLE "order".customer (
+CREATE TABLE ord.customer (
 	customer_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	last_name varchar(30) NULL,
 	first_name varchar(30) NULL,
@@ -177,7 +177,7 @@ CREATE TABLE "order".customer (
 	CONSTRAINT customer_un UNIQUE (email)
 ) TABLESPACE tblspc_order;
 
-CREATE TABLE "order"."order" (
+CREATE TABLE ord.orders (
 	order_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	customer_id int4 NOT NULL,
 	state int4 NOT NULL,
@@ -187,9 +187,9 @@ CREATE TABLE "order"."order" (
 	CONSTRAINT order_pk PRIMARY KEY (order_id)
 ) TABLESPACE tblspc_order;
 
-ALTER TABLE "order"."order" ADD CONSTRAINT order_customer_id_fk FOREIGN KEY (customer_id) REFERENCES "order".customer(customer_id);
+ALTER TABLE ord.orders ADD CONSTRAINT order_customer_id_fk FOREIGN KEY (customer_id) REFERENCES ord.customer(customer_id);
 
-CREATE TABLE "order".order_product (
+CREATE TABLE ord.order_product (
 	order_id int4 NOT NULL,
 	product_id int4 NOT NULL,
 	quantity int4 NOT NULL,
@@ -197,6 +197,5 @@ CREATE TABLE "order".order_product (
 	CONSTRAINT order_product_pk PRIMARY KEY (order_id, product_id)
 ) TABLESPACE tblspc_order;
 
-ALTER TABLE "order".order_product ADD CONSTRAINT order_product_order_id_fk FOREIGN KEY (order_id) REFERENCES "order"."order"(order_id);
-ALTER TABLE "order".order_product ADD CONSTRAINT order_product_product_id_fk FOREIGN KEY (product_id) REFERENCES prod.product(product_id);
- 
+ALTER TABLE ord.order_product ADD CONSTRAINT order_product_order_id_fk FOREIGN KEY (order_id) REFERENCES ord.orders(order_id);
+ALTER TABLE ord.order_product ADD CONSTRAINT order_product_product_id_fk FOREIGN KEY (product_id) REFERENCES prod.product(product_id);
