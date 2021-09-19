@@ -74,6 +74,3 @@ WHERE 	customer_id = 1 AND
 
 --Index Scan using order_customer_id_state_idx on orders  (cost=0.42..8.44 rows=1 width=33)
 --  Index Cond: ((customer_id = 1) AND (state = 4))
-
-
-
