@@ -21,7 +21,7 @@ ORDER BY year_game;
 
 WITH cte AS (
 	SELECT 	year_game, 
-			SUM(points) points
+		SUM(points) points
 	FROM 	statistic
 	GROUP BY year_game
 	ORDER BY year_game
@@ -33,12 +33,12 @@ FROM	cte;
 
 WITH cte AS (
 	SELECT 	year_game, 
-			SUM(points) points
+		SUM(points) points
 	FROM 	statistic
 	GROUP BY year_game
 	ORDER BY year_game
 ) 
 SELECT 	year_game, 
-		points,
-		LAG(points, 1) OVER (ORDER BY year_game) previous_year_points
+	points,
+	LAG(points, 1) OVER (ORDER BY year_game) previous_year_points
 FROM 	cte;
