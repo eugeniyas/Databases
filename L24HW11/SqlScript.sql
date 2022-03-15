@@ -1,4 +1,4 @@
--- Выборка товаров с указанием производителя (производитель указывается всегда)
+-- Р’С‹Р±РѕСЂРєР° С‚РѕРІР°СЂРѕРІ СЃ СѓРєР°Р·Р°РЅРёРµРј РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЏ (РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ СѓРєР°Р·С‹РІР°РµС‚СЃСЏ РІСЃРµРіРґР°)
 SELECT 	p.product_id,
 		p.code,
 		p.title,
@@ -6,7 +6,7 @@ SELECT 	p.product_id,
 FROM 	store.product p 
 		INNER JOIN store.producer pr ON pr.producer_id = p.producer_id;
 
--- Выборка товаров с указанием категории (категория может быть не указана)
+-- Р’С‹Р±РѕСЂРєР° С‚РѕРІР°СЂРѕРІ СЃ СѓРєР°Р·Р°РЅРёРµРј РєР°С‚РµРіРѕСЂРёРё (РєР°С‚РµРіРѕСЂРёСЏ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµ СѓРєР°Р·Р°РЅР°)
 SELECT 	p.product_id,
 		p.code,
 		p.title,
@@ -15,32 +15,30 @@ FROM 	store.product p
 		LEFT JOIN store.product_category pc ON pc.product_id = p.product_id 
 		LEFT JOIN store.category c ON c.category_id = pc.category_id;
 
--- Поиск товара по артикулу
+-- РџРѕРёСЃРє С‚РѕРІР°СЂР° РїРѕ Р°СЂС‚РёРєСѓР»Сѓ
 SELECT 	*
 FROM 	store.product p 
 WHERE 	code = '168713';
 
--- Выбока товаров, стоимость которых не превышает 50 руб
+-- Р’С‹Р±РѕРєР° С‚РѕРІР°СЂРѕРІ, СЃС‚РѕРёРјРѕСЃС‚СЊ РєРѕС‚РѕСЂС‹С… РЅРµ РїСЂРµРІС‹С€Р°РµС‚ 50 СЂСѓР±
 SELECT 	*
 FROM 	store.product p 
 WHERE 	p.price  < 50;
 
--- Выбока товаров, производителем которых является Berlingo 
+-- Р’С‹Р±РѕРєР° С‚РѕРІР°СЂРѕРІ, РїСЂРѕРёР·РІРѕРґРёС‚РµР»РµРј РєРѕС‚РѕСЂС‹С… СЏРІР»СЏРµС‚СЃСЏ Berlingo 
 SELECT 	*
 FROM 	store.product p 
 		INNER JOIN store.producer pr ON pr.producer_id = p.producer_id
 WHERE 	pr.producer_name  = 'Berlingo';
 
--- Выбока товаров из категории "Ручки гелевые" 
+-- Р’С‹Р±РѕРєР° С‚РѕРІР°СЂРѕРІ РёР· РєР°С‚РµРіРѕСЂРёРё "Р СѓС‡РєРё РіРµР»РµРІС‹Рµ" 
 SELECT 	*
 FROM 	store.product p 
 		LEFT JOIN store.product_category pc ON pc.product_id = p.product_id 
 		LEFT JOIN store.category c ON c.category_id = pc.category_id
 WHERE 	c.category_id = 3;
 
--- Новые заказы, оформленные сегодня
+-- РќРѕРІС‹Рµ Р·Р°РєР°Р·С‹, РѕС„РѕСЂРјР»РµРЅРЅС‹Рµ СЃРµРіРѕРґРЅСЏ
 SELECT 	*
 FROM 	store.orders o 
 WHERE 	DATE(o.create_date) = CURDATE() AND o.state = 0;
-
-
