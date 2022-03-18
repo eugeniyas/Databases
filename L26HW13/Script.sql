@@ -1,11 +1,10 @@
-
--- максимальная и минимальная цена товара и кол-во предложений
+-- РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ Рё РјРёРЅРёРјР°Р»СЊРЅР°СЏ С†РµРЅР° С‚РѕРІР°СЂР° Рё РєРѕР»-РІРѕ РїСЂРµРґР»РѕР¶РµРЅРёР№
 SELECT 	MIN(price), 
 		MAX(price), 
 		COUNT(*) 
 FROM 	store.product;
 
--- самый дорогой и самый дешевый товар в каждой категории
+-- СЃР°РјС‹Р№ РґРѕСЂРѕРіРѕР№ Рё СЃР°РјС‹Р№ РґРµС€РµРІС‹Р№ С‚РѕРІР°СЂ РІ РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё
 SELECT 	pc.category_id, 
 		MIN(p.price), 
 		MAX(p.price)
@@ -13,14 +12,14 @@ FROM 	store.product p
 		INNER JOIN store.product_category pc ON pc.product_id  = p.product_id
 GROUP BY pc.category_id;
 
--- rollup с количеством товаров по категориям
+-- rollup СЃ РєРѕР»РёС‡РµСЃС‚РІРѕРј С‚РѕРІР°СЂРѕРІ РїРѕ РєР°С‚РµРіРѕСЂРёСЏРј
 SELECT 	IF(GROUPING(pc.category_id), 'All', pc.category_id) AS category, 
 		COUNT(*)
 FROM 	store.product p 
 		INNER JOIN store.product_category pc ON pc.product_id  = p.product_id
 GROUP BY pc.category_id WITH ROLLUP;
 
--- самый дорогой и самый дешевый товар в каждой категории, в которой насчитывается более 10 товаров
+-- СЃР°РјС‹Р№ РґРѕСЂРѕРіРѕР№ Рё СЃР°РјС‹Р№ РґРµС€РµРІС‹Р№ С‚РѕРІР°СЂ РІ РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё, РІ РєРѕС‚РѕСЂРѕР№ РЅР°СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ Р±РѕР»РµРµ 10 С‚РѕРІР°СЂРѕРІ
 SELECT 	pc.category_id,
 		MIN(CASE 
 				WHEN p.price < 1 THEN 0 
@@ -32,4 +31,3 @@ FROM 	store.product p
 		INNER JOIN store.product_category pc ON pc.product_id  = p.product_id
 GROUP BY pc.category_id 
 HAVING COUNT(*) > 1;
-
