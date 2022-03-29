@@ -2,7 +2,7 @@
 DROP PROCEDURE IF EXISTS get_products;
 DELIMITER //
 CREATE PROCEDURE get_products(
-	category_id INT(11), 
+    category_id INT(11), 
     producer_id INT(11), 
     price_min DECIMAL(9,2), 
     price_max DECIMAL(9,2), 
@@ -15,18 +15,18 @@ BEGIN
 
 	SET @str = CONCAT('
 	SELECT 	p.product_id,
-			p.code,
-            p.title,
-            p.description,
-            p.price,
-            c.category_id,
-            c.title category_title
+		p.code,
+            	p.title,
+		p.description,
+		p.price,
+		c.category_id,
+		c.title category_title
 	FROM 	product p
-			INNER JOIN product_category pc ON pc.product_id = p.product_id
-			INNER JOIN category c ON c.category_id = pc.category_id 
+		INNER JOIN product_category pc ON pc.product_id = p.product_id
+		INNER JOIN category c ON c.category_id = pc.category_id 
 	WHERE	c.category_id = ? AND
-			p.producer_id = ? AND
-			p.price >= ? AND p.price <= ?
+		p.producer_id = ? AND
+		p.price >= ? AND p.price <= ?
 	ORDER BY ', @sort_string, ' 
 	LIMIT ? OFFSET ?;');
 
