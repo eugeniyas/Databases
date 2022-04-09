@@ -1,4 +1,4 @@
-# Модель данных"
+# Домашнее задание по теме "Модель данных"
 
 См. [customer_diagram.pdf](https://github.com/eugeniyas/otus-databases/blob/main/L34HW19/customer_diagram.pdf)
 
